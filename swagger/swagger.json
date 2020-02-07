@@ -165,30 +165,6 @@
                         "description": ":id is not int"
                     }
                 }
-            },
-            "delete": {
-                "tags": [
-                    "votacion"
-                ],
-                "description": "delete the Votacion",
-                "operationId": "VotacionController.Delete",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "description": "The id you want to delete",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{string} delete success!"
-                    },
-                    "403": {
-                        "description": "id is empty"
-                    }
-                }
             }
         }
     },
