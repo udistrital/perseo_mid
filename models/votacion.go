@@ -133,3 +133,12 @@ func conversionVotacionCliente(votacion map[string]interface{}) (votacionconvert
 
 	return votacion
 }
+
+
+// PutVotaciones ...
+func PutVotaciones(votacion map[string]interface{}, votacionID string) (votacionEnviada map[string]interface{}, outputError interface{}) {
+
+	votacionConvertida := conversionVotacionJBPM(votacion)
+
+	return votacionConvertida, nil
+}
