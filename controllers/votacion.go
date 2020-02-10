@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/udistrital/perseo_mid/models"
 )
 
 // VotacionController operations for Votacion
@@ -52,6 +53,22 @@ func (c *VotacionController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *VotacionController) GetAll() {
+	var alertErr models.Alert
+	alertas := append([]interface{}{"Response:"})
+	votaciones, errVotaciones := models.ObtenerTodasVotaciones()
+	if votaciones != nil {
+		alertErr.Type = "OK"
+		alertErr.Code = "200"
+		alertErr.Body = votaciones
+	} else {
+		alertErr.Type = "error"
+		alertErr.Code = "404"
+		alertas = append(alertas, errVotaciones)
+		alertErr.Body = alertas
+		c.Ctx.Output.SetStatus(404)
+	}
+	c.Data["json"] = alertErr
+	c.ServeJSON()
 
 }
 
