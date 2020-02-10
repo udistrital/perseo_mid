@@ -37,6 +37,23 @@ func (c *VotacionController) Post() {
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *VotacionController) GetOne() {
+	idStr := c.Ctx.Input.Param(":id")
+	var alertErr models.Alert
+	alertas := append([]interface{}{"Response:"})
+	votacion, errVotacion := models.ObtenerTodasVotacionesID(idStr)
+	if votacion != nil {
+		alertErr.Type = "OK"
+		alertErr.Code = "200"
+		alertErr.Body = votacion
+	} else {
+		alertErr.Type = "error"
+		alertErr.Code = "404"
+		alertas = append(alertas, errVotacion)
+		alertErr.Body = alertas
+		c.Ctx.Output.SetStatus(404)
+	}
+	c.Data["json"] = alertErr
+	c.ServeJSON()
 
 }
 
