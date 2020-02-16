@@ -1,48 +1,25 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/astaxie/beego"
+)
 
 // ObtenerTodasVotaciones ...
 func ObtenerTodasVotaciones() (votaciones []map[string]interface{}, outputError interface{}) {
-	var votacionesCenso []map[string]interface{}
-	// error := GetJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+"contratoSuscritoProxyService/dependencias_sic/", &votacionesCenso)
-	// if error != nil {
-	// 	return nil, error
-	// } else {
-	// 	return votacionesCenso, nil
-
-	// }
-	votacionesCenso = append(votacionesCenso, map[string]interface{}{
-		"Id":             1,
-		"Nombre":         "aaaaaaaaaaa",
-		"Observacion":    "sssssssssssssss",
-		"Año":            "2020-02-20T05:00:00.000Z",
-		"Fechaejecucion": "2020-02-14T05:00:00.000Z",
-		"Estado":         true,
-		"DocentesPlanta": true,
-		"DocentesVe":     true,
-		"Funcionarios":   true,
-		"Estudiantes":    true,
-		"Egresados":      true,
-		"Contratistas":   false,
-		"Exrectores":     true,
-	})
-	votacionesCenso = append(votacionesCenso, map[string]interface{}{
-		"Id":             2,
-		"Nombre":         "prueba",
-		"Observacion":    "reolucion x",
-		"Año":            "2020-02-20T05:00:00.000Z",
-		"Fechaejecucion": "2020-02-14T05:00:00.000Z",
-		"Estado":         true,
-		"DocentesPlanta": true,
-		"DocentesVe":     true,
-		"Funcionarios":   false,
-		"Estudiantes":    true,
-		"Egresados":      true,
-		"Contratistas":   false,
-		"Exrectores":     false,
-	})
-	return votacionesCenso, nil
+	var votacionesCenso map[string]interface{}
+	error := GetJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+beego.AppConfig.String("perseo_ns_service")+"votaciones", &votacionesCenso)
+	if error != nil {
+		return nil, error
+	}
+	votacionesArray := votacionesCenso["votaciones"].(map[string]interface{})
+	ArrayDeVotaciones, errArray := GetElementoMaptoStringToMapArray(votacionesArray["votacion"])
+	if ArrayDeVotaciones != nil {
+		votacionesConvertido := conversionVotacionCliente(ArrayDeVotaciones)
+		return votacionesConvertido, nil
+	}
+	return nil, errArray
 }
 
 // ObtenerTodasVotacionesID ...
@@ -119,21 +96,27 @@ func conversionVotacionJBPM(votacion map[string]interface{}) (votacionconvertida
 	return votacion
 }
 
-func conversionVotacionCliente(votacion map[string]interface{}) (votacionconvertida map[string]interface{}) {
-	// votacion["Contratistas"] = "N"
-	for key, value := range votacion {
-		fmt.Println("Key:", key, "Value:", value)
-		if fmt.Sprintf("%v", votacion[key]) == "S" {
-			votacion[key] = true
-		}
-		if fmt.Sprintf("%v", votacion[key]) == "N" {
-			votacion[key] = false
+func conversionVotacionCliente(votacion []map[string]interface{}) (votacionconvertida []map[string]interface{}) {
+	for i := 0; i < len(votacion); i++ {
+		for key := range votacion[i] {
+			// fmt.Println("Key:", key, "Value:", value)
+			if fmt.Sprintf("%v", votacion[i][key]) == "S" {
+				votacion[i][key] = true
+			}
+			if fmt.Sprintf("%v", votacion[i][key]) == "A" {
+				votacion[i][key] = true
+			}
+			if fmt.Sprintf("%v", votacion[i][key]) == "N" {
+				votacion[i][key] = false
+			}
+			if fmt.Sprintf("%v", votacion[i][key]) == "I" {
+				votacion[i][key] = false
+			}
 		}
 	}
 
 	return votacion
 }
-
 
 // PutVotaciones ...
 func PutVotaciones(votacion map[string]interface{}, votacionID string) (votacionEnviada map[string]interface{}, outputError interface{}) {
