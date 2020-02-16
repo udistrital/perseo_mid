@@ -113,7 +113,7 @@ steps:
       - master
       event:
       - push      
-  
+   
   - name: NotifyTelegram
     image: appleboy/drone-telegram
     settings:
