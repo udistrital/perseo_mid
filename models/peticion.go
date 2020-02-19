@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/astaxie/beego/logs"
-
 	"github.com/astaxie/beego"
 )
 
@@ -33,7 +31,7 @@ func GetJSONJBPM(urlp string, target interface{}) error {
 func SendJSONJBPM(urlp string, trequest string, target interface{}, datajson interface{}) error {
 	b := new(bytes.Buffer)
 	if datajson != nil {
-		logs.Info(datajson)
+		// logs.Info(datajson)
 		json.NewEncoder(b).Encode(datajson)
 	}
 	// jsonValue, _ := json.Marshal(datajson)
