@@ -61,7 +61,7 @@ func ObtenerTodasVotacionesID(idVotacion string) (votaciones []map[string]interf
 // PostVotaciones ...
 func PostVotaciones(votacion map[string]interface{}) (votacionEnviada map[string]interface{}, outputError interface{}) {
 	var votacionPostJbpm map[string]interface{}
-	// var votacionesCenso []map[string]interface{}
+	var votacionesCenso map[string]interface{}
 	// error := GetJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+"contratoSuscritoProxyService/dependencias_sic/"+idVotacion, &votacionesCenso)
 	// if error != nil {
 	// 	return nil, error
@@ -81,9 +81,14 @@ func PostVotaciones(votacion map[string]interface{}) (votacionEnviada map[string
 		votacionPostJbpm = map[string]interface{}{
 			"post_votacion": votacionConvertida,
 		}
-		fmt.Println(votacionPostJbpm)
+		// fmt.Println(votacionPostJbpm)
+		error := SendJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+beego.AppConfig.String("perseo_ns_service")+"post_votacion", "POST", &votacionesCenso, votacionPostJbpm)
+		if error != nil {
+			return nil, error
+		}
+		return votacionesCenso, nil
 
-		return votacionPostJbpm, nil
+		// return votacionPostJbpm, nil
 	}
 	return nil, errAll
 

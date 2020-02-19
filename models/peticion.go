@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/astaxie/beego/logs"
+
 	"github.com/astaxie/beego"
 )
 
@@ -31,34 +33,18 @@ func GetJSONJBPM(urlp string, target interface{}) error {
 func SendJSONJBPM(urlp string, trequest string, target interface{}, datajson interface{}) error {
 	b := new(bytes.Buffer)
 	if datajson != nil {
+		logs.Info(datajson)
 		json.NewEncoder(b).Encode(datajson)
 	}
+	// jsonValue, _ := json.Marshal(datajson)
 	//proxyUrl, err := url.Parse("http://10.20.4.15:3128")
 	//http.DefaultTransport = &http.Transport{Proxy: http.ProxyURL(proxyUrl)}
 
 	client := &http.Client{}
 	req, err := http.NewRequest(trequest, urlp, b)
+	// req, err := http.http.Post(urlp, "application/json", bytes.NewBuffer(jsonValue))
 	req.Header.Set("Accept", "application/json")
-
-	//Se intenta acceder a cabecera, si no existe, se realiza peticion normal.
-	defer func() {
-		//Catch
-		if r := recover(); r != nil {
-
-			client := &http.Client{}
-			resp, err := client.Do(req)
-			if err != nil {
-				beego.Error("Error reading response. ", err)
-			}
-
-			defer resp.Body.Close()
-			json.NewDecoder(resp.Body).Decode(target)
-		}
-	}()
-
-	//try
-	// header := GetHeader()
-	// req.Header.Set("Authorization", header)
+	req.Header.Add("Content-Type", "application/json")
 
 	resp, err := client.Do(req)
 	if err != nil {
