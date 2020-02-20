@@ -20,6 +20,11 @@ func init() {
 				&controllers.VotacionController{},
 			),
 		),
+		beego.NSNamespace("/script",
+			beego.NSInclude(
+				&controllers.ScriptController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

@@ -15,13 +15,13 @@
     },
     "basePath": "/v1",
     "paths": {
-        "/votacion/": {
+        "/script/": {
             "get": {
                 "tags": [
-                    "votacion"
+                    "script"
                 ],
-                "description": "get Votacion",
-                "operationId": "VotacionController.GetAll",
+                "description": "get Script",
+                "operationId": "ScriptController.GetAll",
                 "parameters": [
                     {
                         "in": "query",
@@ -64,7 +64,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Script"
                         }
                     },
                     "403": {
@@ -74,18 +74,18 @@
             },
             "post": {
                 "tags": [
-                    "votacion"
+                    "script"
                 ],
-                "description": "create Votacion",
-                "operationId": "VotacionController.Create",
+                "description": "create Script",
+                "operationId": "ScriptController.Create",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "body for Votacion content",
+                        "description": "body for Script content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Script"
                         }
                     }
                 ],
@@ -93,7 +93,7 @@
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Script"
                         }
                     },
                     "403": {
@@ -102,13 +102,13 @@
                 }
             }
         },
-        "/votacion/{id}": {
+        "/script/{id}": {
             "get": {
                 "tags": [
-                    "votacion"
+                    "script"
                 ],
-                "description": "get Votacion by id",
-                "operationId": "VotacionController.GetOne",
+                "description": "get Script by id",
+                "operationId": "ScriptController.GetOne",
                 "parameters": [
                     {
                         "in": "path",
@@ -122,7 +122,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Script"
                         }
                     },
                     "403": {
@@ -132,10 +132,10 @@
             },
             "put": {
                 "tags": [
-                    "votacion"
+                    "script"
                 ],
-                "description": "update the Votacion",
-                "operationId": "VotacionController.Put",
+                "description": "update the Script",
+                "operationId": "ScriptController.Put",
                 "parameters": [
                     {
                         "in": "path",
@@ -147,10 +147,10 @@
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "body for Votacion content",
+                        "description": "body for Script content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Script"
                         }
                     }
                 ],
@@ -158,8 +158,137 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Script"
                         }
+                    },
+                    "403": {
+                        "description": ":id is not int"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "script"
+                ],
+                "description": "delete the Script",
+                "operationId": "ScriptController.Delete",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "id is empty"
+                    }
+                }
+            }
+        },
+        "/votacion/": {
+            "get": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Obtiene todas la votaciones",
+                "operationId": "VotacionController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Creacion de votacion",
+                "operationId": "VotacionController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "se requiere el cuerpo de la votacion, en jbpm se puede obtener o en el cliente",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/{}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{} votacion creada"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/votacion/{id}": {
+            "get": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Obtiene una votacion segun un id especifico de la misma",
+                "operationId": "VotacionController.GetOne",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "se requiere el ID de la votacion",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ":id is empty"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Actualizacion de votaciones",
+                "operationId": "VotacionController.Put",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "se requiere el id de la votacion a axctualizar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "se requiere el cuerpo de la votacion, en jbpm se puede obtener o en el cliente",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/{}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
                     },
                     "403": {
                         "description": ":id is not int"
@@ -169,15 +298,23 @@
         }
     },
     "definitions": {
-        "models.Votacion": {
-            "title": "Votacion",
+        "models.Script": {
+            "title": "Script",
+            "type": "object"
+        },
+        "{}": {
+            "title": "{}",
             "type": "object"
         }
     },
     "tags": [
         {
             "name": "votacion",
-            "description": "VotacionController operations for Votacion\n"
+            "description": "VotacionController crud para votaciones de perseo\n"
+        },
+        {
+            "name": "script",
+            "description": "ScriptController operations for Script\n"
         }
     ]
 }
