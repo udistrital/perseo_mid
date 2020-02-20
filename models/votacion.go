@@ -74,8 +74,8 @@ func PostVotaciones(votacion map[string]interface{}) (votacionEnviada map[string
 	votacionesAll, errAll := ObtenerTodasVotaciones()
 	if votacionesAll != nil {
 		votacionConvertida["TIV_CODIGO"] = votacionesAll[0]["TIV_CODIGO"].(float64) + 1
-		votacionConvertida["TIV_FECHA_ELECCION"] = ObtenerFecha(votacionesAll[0]["TIV_FECHA_ELECCION"])
-		año, _ := strconv.ParseFloat(ObtenerFecha(votacionesAll[0]["TIV_ANO"]), 64)
+		votacionConvertida["TIV_FECHA_ELECCION"] = ObtenerFecha(votacionConvertida["TIV_FECHA_ELECCION"])
+		año, _ := strconv.ParseFloat(ObtenerAño(votacionConvertida["TIV_ANO"]), 64)
 		votacionConvertida["TIV_ANO"] = año
 
 		votacionPostJbpm = map[string]interface{}{
@@ -141,10 +141,26 @@ func conversionVotacionCliente(votacion []map[string]interface{}) (votacionconve
 
 // PutVotaciones ...
 func PutVotaciones(votacion map[string]interface{}, votacionID string) (votacionEnviada map[string]interface{}, outputError interface{}) {
+	var votacionPostJbpm map[string]interface{}
+	var votacionesCenso map[string]interface{}
 
 	votacionConvertida := conversionVotacionJBPM(votacion)
+	codigo, _ := strconv.ParseFloat(votacionID, 64)
+	votacionConvertida["codigo"] = codigo
+	año, _ := strconv.ParseFloat(ObtenerAño(votacionConvertida["TIV_ANO"]), 64)
+	votacionConvertida["TIV_ANO"] = año
+	votacionConvertida["TIV_FECHA_ELECCION"] = ObtenerFecha(votacionConvertida["TIV_FECHA_ELECCION"])
+	delete(votacionConvertida, "TIV_CODIGO")
+	votacionPostJbpm = map[string]interface{}{
+		"put_votacion": votacionConvertida,
+	}
+	error := SendJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+beego.AppConfig.String("perseo_ns_service")+"put_votacion", "POST", &votacionesCenso, votacionPostJbpm)
+	if error != nil {
+		return nil, error
+	}
+	return votacionesCenso, nil
 
-	return votacionConvertida, nil
+	// return votacionPostJbpm, nil
 }
 
 // ObtenerultimaVotacion ...
