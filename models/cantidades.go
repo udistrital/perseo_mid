@@ -10,11 +10,29 @@ func ObtenerCantidades(codigo string) (votaciones []map[string]interface{}, outp
 	if DocPlanta != nil {
 		DocVE, errVE := ObtenerCantDocVE(codigo)
 		if DocVE != nil {
-			ArrayCantidades = append(ArrayCantidades, map[string]interface{}{
-				"docentes_planta": DocPlanta["cantidades"],
-				"docentes_ve":     DocVE["cantidades"],
-			})
-			return ArrayCantidades, nil
+			Egresados, errEgre := ObtenerEgresados(codigo)
+			if Egresados != nil {
+				Administrativos, errAdm := ObtenerAdministrativos(codigo)
+				if Administrativos != nil {
+					Estudiantes, errEst := ObtenerEstudiantes(codigo)
+					if Estudiantes != nil {
+						ArrayCantidades = append(ArrayCantidades, map[string]interface{}{
+							"docentes_planta": DocPlanta["cantidades"],
+							"docentes_ve":     DocVE["cantidades"],
+							"egresados":       Egresados["cantidades"],
+							"administrativos": Administrativos["cantidades"],
+							"estudiantes":     Estudiantes["cantidades"],
+						})
+						return ArrayCantidades, nil
+					}
+					return nil, errEst
+
+				}
+				return nil, errAdm
+
+			}
+			return nil, errEgre
+
 		}
 		return nil, errVE
 
@@ -58,6 +76,34 @@ func ObtenerEgresados(codigo string) (cantidad map[string]interface{}, outputErr
 		return nil, error
 	}
 	cantDocPlanta, errCantDocPlanta := ObtenerValorCantidad(CantidadPersonas["egresados"])
+	if cantDocPlanta != nil {
+		return cantDocPlanta, nil
+	}
+	return nil, errCantDocPlanta
+}
+
+// ObtenerAdministrativos ...
+func ObtenerAdministrativos(codigo string) (cantidad map[string]interface{}, outputError interface{}) {
+	var CantidadPersonas map[string]interface{}
+	error := GetJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+beego.AppConfig.String("perseo_ns_service")+"cantidadAdministrativos/"+codigo, &CantidadPersonas)
+	if error != nil {
+		return nil, error
+	}
+	cantDocPlanta, errCantDocPlanta := ObtenerValorCantidad(CantidadPersonas["administrativos"])
+	if cantDocPlanta != nil {
+		return cantDocPlanta, nil
+	}
+	return nil, errCantDocPlanta
+}
+
+// ObtenerEstudiantes ...
+func ObtenerEstudiantes(codigo string) (cantidad map[string]interface{}, outputError interface{}) {
+	var CantidadPersonas map[string]interface{}
+	error := GetJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+beego.AppConfig.String("perseo_ns_service")+"cantidadEstudiantes/"+codigo, &CantidadPersonas)
+	if error != nil {
+		return nil, error
+	}
+	cantDocPlanta, errCantDocPlanta := ObtenerValorCantidad(CantidadPersonas["estudiantes_cant"])
 	if cantDocPlanta != nil {
 		return cantDocPlanta, nil
 	}
