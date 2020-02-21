@@ -15,13 +15,13 @@
     },
     "basePath": "/v1",
     "paths": {
-        "/votacion/": {
+        "/cantidades/": {
             "get": {
                 "tags": [
-                    "votacion"
+                    "cantidades"
                 ],
-                "description": "get Votacion",
-                "operationId": "VotacionController.GetAll",
+                "description": "get Cantidades",
+                "operationId": "CantidadesController.GetAll",
                 "parameters": [
                     {
                         "in": "query",
@@ -64,7 +64,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Cantidades"
                         }
                     },
                     "403": {
@@ -74,18 +74,18 @@
             },
             "post": {
                 "tags": [
-                    "votacion"
+                    "cantidades"
                 ],
-                "description": "create Votacion",
-                "operationId": "VotacionController.Create",
+                "description": "create Cantidades",
+                "operationId": "CantidadesController.Create",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "body for Votacion content",
+                        "description": "body for Cantidades content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Cantidades"
                         }
                     }
                 ],
@@ -93,7 +93,7 @@
                     "201": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Cantidades"
                         }
                     },
                     "403": {
@@ -102,13 +102,13 @@
                 }
             }
         },
-        "/votacion/{id}": {
+        "/cantidades/{id}": {
             "get": {
                 "tags": [
-                    "votacion"
+                    "cantidades"
                 ],
-                "description": "get Votacion by id",
-                "operationId": "VotacionController.GetOne",
+                "description": "get Cantidades by id",
+                "operationId": "CantidadesController.GetOne",
                 "parameters": [
                     {
                         "in": "path",
@@ -122,7 +122,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Cantidades"
                         }
                     },
                     "403": {
@@ -132,10 +132,10 @@
             },
             "put": {
                 "tags": [
-                    "votacion"
+                    "cantidades"
                 ],
-                "description": "update the Votacion",
-                "operationId": "VotacionController.Put",
+                "description": "update the Cantidades",
+                "operationId": "CantidadesController.Put",
                 "parameters": [
                     {
                         "in": "path",
@@ -147,10 +147,10 @@
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "body for Votacion content",
+                        "description": "body for Cantidades content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Cantidades"
                         }
                     }
                 ],
@@ -158,8 +158,341 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.Votacion"
+                            "$ref": "#/definitions/models.Cantidades"
                         }
+                    },
+                    "403": {
+                        "description": ":id is not int"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "cantidades"
+                ],
+                "description": "delete the Cantidades",
+                "operationId": "CantidadesController.Delete",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "id is empty"
+                    }
+                }
+            }
+        },
+        "/filtro/": {
+            "get": {
+                "tags": [
+                    "filtro"
+                ],
+                "description": "get Filtro",
+                "operationId": "FiltroController.GetAll",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "query",
+                        "description": "Filter. e.g. col1:v1,col2:v2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fields",
+                        "description": "Fields returned. e.g. col1,col2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "sortby",
+                        "description": "Sorted-by fields. e.g. col1,col2 ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "description": "Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ...",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Limit the size of result set. Must be an integer",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Start position of result set. Must be an integer",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Filtro"
+                        }
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "filtro"
+                ],
+                "description": "create Filtro",
+                "operationId": "FiltroController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Filtro content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Filtro"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Filtro"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/filtro/{id}": {
+            "get": {
+                "tags": [
+                    "filtro"
+                ],
+                "description": "get Filtro by id",
+                "operationId": "FiltroController.GetOne",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Filtro"
+                        }
+                    },
+                    "403": {
+                        "description": ":id is empty"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "filtro"
+                ],
+                "description": "update the Filtro",
+                "operationId": "FiltroController.Put",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Filtro content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Filtro"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Filtro"
+                        }
+                    },
+                    "403": {
+                        "description": ":id is not int"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "filtro"
+                ],
+                "description": "delete the Filtro",
+                "operationId": "FiltroController.Delete",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "The id you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "id is empty"
+                    }
+                }
+            }
+        },
+        "/script/": {
+            "post": {
+                "tags": [
+                    "script"
+                ],
+                "description": "create Script",
+                "operationId": "ScriptController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for Script content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/{}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/votacion/": {
+            "get": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Obtiene todas la votaciones",
+                "operationId": "VotacionController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Creacion de votacion",
+                "operationId": "VotacionController.Create",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "se requiere el cuerpo de la votacion, en jbpm se puede obtener o en el cliente",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/{}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "{} votacion creada"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/votacion/{id}": {
+            "get": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Obtiene una votacion segun un id especifico de la misma",
+                "operationId": "VotacionController.GetOne",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "se requiere el ID de la votacion",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
+                    },
+                    "403": {
+                        "description": ":id is empty"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "votacion"
+                ],
+                "description": "Actualizacion de votaciones",
+                "operationId": "VotacionController.Put",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "se requiere el id de la votacion a axctualizar",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "se requiere el cuerpo de la votacion, en jbpm se puede obtener o en el cliente",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/{}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{}"
                     },
                     "403": {
                         "description": ":id is not int"
@@ -169,15 +502,35 @@
         }
     },
     "definitions": {
-        "models.Votacion": {
-            "title": "Votacion",
+        "models.Cantidades": {
+            "title": "Cantidades",
+            "type": "object"
+        },
+        "models.Filtro": {
+            "title": "Filtro",
+            "type": "object"
+        },
+        "{}": {
+            "title": "{}",
             "type": "object"
         }
     },
     "tags": [
         {
             "name": "votacion",
-            "description": "VotacionController operations for Votacion\n"
+            "description": "VotacionController crud para votaciones de perseo\n"
+        },
+        {
+            "name": "script",
+            "description": "ScriptController operations for Script\n"
+        },
+        {
+            "name": "filtro",
+            "description": "FiltroController operations for Filtro\n"
+        },
+        {
+            "name": "cantidades",
+            "description": "CantidadesController operations for Cantidades\n"
         }
     ]
 }

@@ -2,6 +2,8 @@ package models
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/astaxie/beego"
 )
@@ -58,7 +60,8 @@ func ObtenerTodasVotacionesID(idVotacion string) (votaciones []map[string]interf
 
 // PostVotaciones ...
 func PostVotaciones(votacion map[string]interface{}) (votacionEnviada map[string]interface{}, outputError interface{}) {
-	// var votacionesCenso []map[string]interface{}
+	var votacionPostJbpm map[string]interface{}
+	var votacionesCenso map[string]interface{}
 	// error := GetJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+"contratoSuscritoProxyService/dependencias_sic/"+idVotacion, &votacionesCenso)
 	// if error != nil {
 	// 	return nil, error
@@ -66,36 +69,48 @@ func PostVotaciones(votacion map[string]interface{}) (votacionEnviada map[string
 	// 	return votacionesCenso, nil
 
 	// }
-	// votacionesCenso = append(votacionesCenso, map[string]interface{}{
-	// 	"Id":             2,
-	// 	"Nombre":         "prueba",
-	// 	"Observacion":    "reolucion x",
-	// 	"Año":            "2020-02-20T05:00:00.000Z",
-	// 	"Fechaejecucion": "2020-02-14T05:00:00.000Z",
-	// 	"Estado":         true,
-	// 	"DocentesPlanta": true,
-	// 	"DocentesVe":     true,
-	// 	"Funcionarios":   false,
-	// 	"Estudiantes":    true,
-	// 	"Egresados":      true,
-	// 	"Contratistas":   false,
-	// 	"Exrectores":     false,
-	// })
-	// return votacionesCenso, nil
+	//
 	votacionConvertida := conversionVotacionJBPM(votacion)
+	votacionesAll, errAll := ObtenerTodasVotaciones()
+	if votacionesAll != nil {
+		votacionConvertida["TIV_CODIGO"] = votacionesAll[0]["TIV_CODIGO"].(float64) + 1
+		votacionConvertida["TIV_FECHA_ELECCION"] = ObtenerFecha(votacionConvertida["TIV_FECHA_ELECCION"])
+		año, _ := strconv.ParseFloat(ObtenerAño(votacionConvertida["TIV_ANO"]), 64)
+		votacionConvertida["TIV_ANO"] = año
 
-	return votacionConvertida, nil
+		votacionPostJbpm = map[string]interface{}{
+			"post_votacion": votacionConvertida,
+		}
+		// fmt.Println(votacionPostJbpm)
+		error := SendJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+beego.AppConfig.String("perseo_ns_service")+"post_votacion", "POST", &votacionesCenso, votacionPostJbpm)
+		if error != nil {
+			return nil, error
+		}
+		return votacionesCenso, nil
+
+		// return votacionPostJbpm, nil
+	}
+	return nil, errAll
+
 }
 
 func conversionVotacionJBPM(votacion map[string]interface{}) (votacionconvertida map[string]interface{}) {
 	// votacion["Contratistas"] = "N"
-	for key, value := range votacion {
-		fmt.Println("Key:", key, "Value:", value)
+	for key := range votacion {
+		// fmt.Println("Key:", key, "Value:", value)
 		if fmt.Sprintf("%v", votacion[key]) == "true" {
-			votacion[key] = "S"
+			if key == "TVI_ESTADO" {
+				votacion[key] = "A"
+			} else {
+				votacion[key] = "S"
+			}
 		}
 		if fmt.Sprintf("%v", votacion[key]) == "false" {
-			votacion[key] = "N"
+			if key == "TVI_ESTADO" {
+				votacion[key] = "I"
+			} else {
+				votacion[key] = "N"
+			}
 		}
 	}
 
@@ -126,8 +141,47 @@ func conversionVotacionCliente(votacion []map[string]interface{}) (votacionconve
 
 // PutVotaciones ...
 func PutVotaciones(votacion map[string]interface{}, votacionID string) (votacionEnviada map[string]interface{}, outputError interface{}) {
+	var votacionPostJbpm map[string]interface{}
+	var votacionesCenso map[string]interface{}
 
 	votacionConvertida := conversionVotacionJBPM(votacion)
+	codigo, _ := strconv.ParseFloat(votacionID, 64)
+	votacionConvertida["codigo"] = codigo
+	año, _ := strconv.ParseFloat(ObtenerAño(votacionConvertida["TIV_ANO"]), 64)
+	votacionConvertida["TIV_ANO"] = año
+	votacionConvertida["TIV_FECHA_ELECCION"] = ObtenerFecha(votacionConvertida["TIV_FECHA_ELECCION"])
+	delete(votacionConvertida, "TIV_CODIGO")
+	votacionPostJbpm = map[string]interface{}{
+		"put_votacion": votacionConvertida,
+	}
+	error := SendJSONJBPM(beego.AppConfig.String("administrativa_amazon_jbpm_url")+beego.AppConfig.String("perseo_ns_service")+"put_votacion", "POST", &votacionesCenso, votacionPostJbpm)
+	if error != nil {
+		return nil, error
+	}
+	return votacionesCenso, nil
 
-	return votacionConvertida, nil
+	// return votacionPostJbpm, nil
+}
+
+// ObtenerultimaVotacion ...
+func ObtenerultimaVotacion() {
+
+}
+
+// ObtenerFecha ...
+func ObtenerFecha(fecha interface{}) string {
+	fechaString := fmt.Sprintf("%v", fecha)
+	fechaString = strings.ToLower(fechaString)
+	// fmt.Println(fecha, fechaString, strings.Split(fechaString, "t")[0])
+	fechaString = strings.Split(fechaString, "t")[0]
+	return fechaString
+}
+
+// ObtenerAño ...
+func ObtenerAño(fecha interface{}) string {
+	fechaString := fmt.Sprintf("%v", fecha)
+	fechaString = strings.ToLower(fechaString)
+	// fmt.Println(fecha, fechaString, strings.Split(fechaString, "t")[0])
+	fechaString = strings.Split(fechaString, "-")[0]
+	return fechaString
 }
