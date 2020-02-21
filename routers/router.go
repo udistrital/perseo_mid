@@ -25,6 +25,16 @@ func init() {
 				&controllers.ScriptController{},
 			),
 		),
+		beego.NSNamespace("/filtro",
+			beego.NSInclude(
+				&controllers.FiltroController{},
+			),
+		),
+		beego.NSNamespace("/cantidades",
+			beego.NSInclude(
+				&controllers.CantidadesController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }
