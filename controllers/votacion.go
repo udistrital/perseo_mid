@@ -7,7 +7,7 @@ import (
 	"github.com/udistrital/perseo_mid/models"
 )
 
-// VotacionController operations for Votacion
+// VotacionController crud para votaciones de perseo
 type VotacionController struct {
 	beego.Controller
 }
@@ -22,10 +22,11 @@ func (c *VotacionController) URLMapping() {
 
 // Post ...
 // @Title Create
-// @Description create Votacion
-// @Param	body		body 	models.Votacion	true		"body for Votacion content"
-// @Success 201 {object} models.Votacion
+// @Description Creacion de votacion
+// @Param	body		body 	{}	true		"se requiere el cuerpo de la votacion, en jbpm se puede obtener o en el cliente"
+// @Success 201 {} votacion creada
 // @Failure 403 body is empty
+// @Failure 400 Bad Request
 // @router / [post]
 func (c *VotacionController) Post() {
 	var votacionRecivida map[string]interface{}
@@ -65,9 +66,9 @@ func (c *VotacionController) Post() {
 
 // GetOne ...
 // @Title GetOne
-// @Description get Votacion by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Votacion
+// @Description Obtiene una votacion segun un id especifico de la misma
+// @Param	id		path 	string	true		"se requiere el ID de la votacion"
+// @Success 200 {}
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *VotacionController) GetOne() {
@@ -93,14 +94,8 @@ func (c *VotacionController) GetOne() {
 
 // GetAll ...
 // @Title GetAll
-// @Description get Votacion
-// @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
-// @Param	fields	query	string	false	"Fields returned. e.g. col1,col2 ..."
-// @Param	sortby	query	string	false	"Sorted-by fields. e.g. col1,col2 ..."
-// @Param	order	query	string	false	"Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ..."
-// @Param	limit	query	string	false	"Limit the size of result set. Must be an integer"
-// @Param	offset	query	string	false	"Start position of result set. Must be an integer"
-// @Success 200 {object} models.Votacion
+// @Description Obtiene todas la votaciones
+// @Success 200 {}
 // @Failure 403
 // @router / [get]
 func (c *VotacionController) GetAll() {
@@ -125,10 +120,10 @@ func (c *VotacionController) GetAll() {
 
 // Put ...
 // @Title Put
-// @Description update the Votacion
-// @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Votacion	true		"body for Votacion content"
-// @Success 200 {object} models.Votacion
+// @Description Actualizacion de votaciones
+// @Param	id		path 	string	true		"se requiere el id de la votacion a axctualizar"
+// @Param	body		body 	{}	true		"se requiere el cuerpo de la votacion, en jbpm se puede obtener o en el cliente"
+// @Success 200 {}
 // @Failure 403 :id is not int
 // @router /:id [put]
 func (c *VotacionController) Put() {
