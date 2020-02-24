@@ -15,93 +15,6 @@
     },
     "basePath": "/v1",
     "paths": {
-        "/cantidades/": {
-            "get": {
-                "tags": [
-                    "cantidades"
-                ],
-                "description": "get Cantidades",
-                "operationId": "CantidadesController.GetAll",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "query",
-                        "description": "Filter. e.g. col1:v1,col2:v2 ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "fields",
-                        "description": "Fields returned. e.g. col1,col2 ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "sortby",
-                        "description": "Sorted-by fields. e.g. col1,col2 ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "order",
-                        "description": "Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "limit",
-                        "description": "Limit the size of result set. Must be an integer",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "offset",
-                        "description": "Start position of result set. Must be an integer",
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Cantidades"
-                        }
-                    },
-                    "403": {
-                        "description": ""
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "cantidades"
-                ],
-                "description": "create Cantidades",
-                "operationId": "CantidadesController.Create",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "body for Cantidades content",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Cantidades"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Cantidades"
-                        }
-                    },
-                    "403": {
-                        "description": "body is empty"
-                    }
-                }
-            }
-        },
         "/cantidades/{id}": {
             "get": {
                 "tags": [
@@ -113,141 +26,22 @@
                     {
                         "in": "path",
                         "name": "id",
-                        "description": "The key for staticblock",
+                        "description": "id de la votacion",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Cantidades"
-                        }
+                        "description": "{}"
                     },
                     "403": {
                         "description": ":id is empty"
                     }
                 }
-            },
-            "put": {
-                "tags": [
-                    "cantidades"
-                ],
-                "description": "update the Cantidades",
-                "operationId": "CantidadesController.Put",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "description": "The id you want to update",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "body for Cantidades content",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Cantidades"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Cantidades"
-                        }
-                    },
-                    "403": {
-                        "description": ":id is not int"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "cantidades"
-                ],
-                "description": "delete the Cantidades",
-                "operationId": "CantidadesController.Delete",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "description": "The id you want to delete",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{string} delete success!"
-                    },
-                    "403": {
-                        "description": "id is empty"
-                    }
-                }
             }
         },
         "/filtro/": {
-            "get": {
-                "tags": [
-                    "filtro"
-                ],
-                "description": "get Filtro",
-                "operationId": "FiltroController.GetAll",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "query",
-                        "description": "Filter. e.g. col1:v1,col2:v2 ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "fields",
-                        "description": "Fields returned. e.g. col1,col2 ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "sortby",
-                        "description": "Sorted-by fields. e.g. col1,col2 ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "order",
-                        "description": "Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ...",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "limit",
-                        "description": "Limit the size of result set. Must be an integer",
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "offset",
-                        "description": "Start position of result set. Must be an integer",
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Filtro"
-                        }
-                    },
-                    "403": {
-                        "description": ""
-                    }
-                }
-            },
             "post": {
                 "tags": [
                     "filtro"
@@ -279,69 +73,6 @@
             }
         },
         "/filtro/{id}": {
-            "get": {
-                "tags": [
-                    "filtro"
-                ],
-                "description": "get Filtro by id",
-                "operationId": "FiltroController.GetOne",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "description": "The key for staticblock",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Filtro"
-                        }
-                    },
-                    "403": {
-                        "description": ":id is empty"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "filtro"
-                ],
-                "description": "update the Filtro",
-                "operationId": "FiltroController.Put",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "description": "The id you want to update",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "body for Filtro content",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Filtro"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Filtro"
-                        }
-                    },
-                    "403": {
-                        "description": ":id is not int"
-                    }
-                }
-            },
             "delete": {
                 "tags": [
                     "filtro"
@@ -502,10 +233,6 @@
         }
     },
     "definitions": {
-        "models.Cantidades": {
-            "title": "Cantidades",
-            "type": "object"
-        },
         "models.Filtro": {
             "title": "Filtro",
             "type": "object"
@@ -522,7 +249,7 @@
         },
         {
             "name": "script",
-            "description": "ScriptController operations for Script\n"
+            "description": "ScriptController recepcion de datos para sabeer que tabla de votantes llenar\n"
         },
         {
             "name": "filtro",
@@ -530,7 +257,7 @@
         },
         {
             "name": "cantidades",
-            "description": "CantidadesController operations for Cantidades\n"
+            "description": "CantidadesController cantidad de personas segun cada rol participante\n"
         }
     ]
 }
