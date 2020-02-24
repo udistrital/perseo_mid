@@ -20,7 +20,7 @@ func ObtenerCantidades(codigo string) (votaciones []map[string]interface{}, outp
 							"docentes_planta": DocPlanta["cantidades"],
 							"docentes_ve":     DocVE["cantidades"],
 							"egresados":       Egresados["cantidades"],
-							"administrativos": Administrativos["cantidades"],
+							"funcionarios":    Administrativos["cantidades"],
 							"estudiantes":     Estudiantes["cantidades"],
 						})
 						return ArrayCantidades, nil
