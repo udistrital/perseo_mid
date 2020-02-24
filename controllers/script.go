@@ -7,7 +7,7 @@ import (
 	"github.com/udistrital/perseo_mid/models"
 )
 
-// ScriptController operations for Script
+// ScriptController recepcion de datos para sabeer que tabla de votantes llenar
 type ScriptController struct {
 	beego.Controller
 }
